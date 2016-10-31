@@ -48,6 +48,15 @@
                 Status
             </md-switch>
 
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Price</label>
+                <input ng-model="VM.Item.price" type="number"
+                       required name="price">
+                <div ng-messages="ItemForm.price.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
             <md-button class="md-button md-primary md-raised" ng-if="VM.Item.id" ng-init="VM.setUser=false"
                        ng-click="VM.setUser=!VM.setUser">Change product author</md-button>
 
@@ -75,6 +84,7 @@
                     </md-input-container>
                 </div>
             </div>
+
             <md-input-container class="md-block" flex-gt-sm>
                 <input required ng-model="VM.categoriesValid" name="categoriesValid"
                        style="display: none;"

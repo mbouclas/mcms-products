@@ -76,6 +76,7 @@
                 description : Lang.langFields(),
                 description_long : Lang.langFields(),
                 active : false,
+                price : 0,
                 categories : [],
                 extraFields : [],
                 tagged : [],

@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'product' => \IdeaSeven\Products\Models\Product::class,
-    'related' => \IdeaSeven\Products\Models\Related::class,
-    'featured' => \IdeaSeven\Products\Models\Featured::class,
+    'product' => \Mcms\Products\Models\Product::class,
+    'related' => \Mcms\Products\Models\Related::class,
+    'featured' => \Mcms\Products\Models\Featured::class,
     'items' => [
         'slug_pattern' => '/product/%slug$s',
         'previewController' => '\FrontEnd\Http\Controllers\HomeController@preview',

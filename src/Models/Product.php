@@ -48,6 +48,7 @@ class Product extends Model
         'user_id',
         'settings',
         'active',
+        'price',
         'published_at'
     ];
 
@@ -67,6 +68,7 @@ class Product extends Model
         'description_long' => 'array',
         'settings' => 'array',
         'thumb' => 'array',
+        'price' => 'integer',
         'active' => 'boolean'
     ];
 

@@ -19,9 +19,9 @@
 
         Menu.addMenu(Menu.newItem({
             id: 'products',
-            title: 'CMS',
+            title: 'Products',
             permalink: '',
-            icon: 'products',
+            icon: 'shopping_cart',
             order: 1,
             acl: {
                 type: 'level',
@@ -34,7 +34,7 @@
         productsMenu.addChildren([
             Menu.newItem({
                 id: 'products-manager',
-                title: 'Products',
+                title: 'Catalogue',
                 permalink: '/products/content',
                 icon: 'content_copy',
                 order : 2

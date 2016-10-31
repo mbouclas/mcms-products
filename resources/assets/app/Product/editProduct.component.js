@@ -58,7 +58,7 @@
                                  moment, ModuleExtender, MLS, ExtraFieldService) {
         var vm = this,
             autoSaveHooks = [],
-            Model = '\\IdeaSeven\\Products\\Models\\Product';
+            Model = '\\Mcms\\Products\\Models\\Product';
 
         vm.published_at = {};
         vm.Lang = Lang;

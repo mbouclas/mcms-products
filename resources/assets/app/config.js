@@ -3,11 +3,11 @@
     var assetsUrl = '/assets/',
         appUrl = '/app/',
         componentsUrl = appUrl + 'Components/',
-        templatesDir = '/package-products/app/templates/';
+        templatesDir = '/vendor/mcms/products/app/templates/';
 
     var config = {
-        productModel : 'IdeaSeven\\\\Products\\\\Models\\\\Product',
-        productCategoryModel : 'IdeaSeven\\\\Products\\\\Models\\\\ProductCategory',
+        productModel : 'Mcms\\\\Products\\\\Models\\\\Product',
+        productCategoryModel : 'Mcms\\\\Products\\\\Models\\\\ProductCategory',
         apiUrl : '/api/',
         prefixUrl : '/admin',
         previewUrl : '/admin/api/product/preview/',

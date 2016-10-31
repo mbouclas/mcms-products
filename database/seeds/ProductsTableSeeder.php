@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
-use IdeaSeven\Products\Models\Product;
-use IdeaSeven\Products\Models\ProductCategory;
+use Mcms\Products\Models\Product;
+use Mcms\Products\Models\ProductCategory;
 
 class ProductsTableSeeder extends Seeder
 {

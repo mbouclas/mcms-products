@@ -151,7 +151,7 @@
             vm.SEO = SEO.fields();
             vm.Parent = $scope.addTo || null;
             vm.thumbUploadOptions.params.item_id = item.id;
-            vm.thumbUploadOptions.params.configurator = '\\IdeaSeven\\Products\\Services\\ProductCategory\\ImageConfigurator';
+            vm.thumbUploadOptions.params.configurator = '\\Mcms\\Products\\Services\\ProductCategory\\ImageConfigurator';
             vm.thumbUploadOptions.params.type = 'thumb';
             vm.Settings = SM.get({name : 'productCategories'});
             LMS.setModel(vm.Item);

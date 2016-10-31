@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->text('title');
             $table->text('description');
             $table->text('description_long');
+            $table->integer('price')->unsigned();
             $table->string('slug');
             $table->integer('user_id')->unsigned();
             $table->boolean('active');
