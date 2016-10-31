@@ -1,0 +1,14 @@
+{
+  "name" : "Products",
+  "package" : "mcms-products",
+  "modules" : [
+    "mcms.products"
+  ],
+  "files" : {
+    "js" : [
+      "vendor/mcms/products/js/products-compiled.js"
+    ],
+    "css" : [
+    ]
+  }
+}

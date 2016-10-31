@@ -1,0 +1,37 @@
+<div class="md-dialog-content">
+
+    <form ng-submit=" VM.save()" novalidate name="ItemForm">
+        <md-tabs md-dynamic-height md-border-bottom md-autoselect>
+            <md-tab label="{{ tab.label }}"
+                    ng-repeat="tab in VM.tabs"
+                    md-active="tab.active"
+                    ng-if="VM[tab.acl] || true">
+                    <md-content class="md-padding" flex>
+<ng-include src="tab.file"></ng-include>
+                    </md-content>
+            </md-tab>
+
+        </md-tabs>
+
+        <div class="alert alert-danger" ng-if="VM.errorsFound">
+            <h5>You have {{ ItemForm.$error.required.length }} errors</h5>
+            <div ng-if="ItemForm.categoriesValid.$error">
+                <strong>*</strong> At least one category is required
+            </div>
+            <div ng-messages="ItemForm.title.$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+            <div ng-messages="ItemForm.permalink.$error">
+                <strong>*</strong> Permalink is required
+            </div>
+        </div>
+
+        <md-button type="submit" class="md-accent md-raised">
+            <md-icon class="material-icons">save</md-icon>
+            Save
+        </md-button>
+
+
+
+    </form>
+</div>
