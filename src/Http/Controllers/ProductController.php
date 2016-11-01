@@ -138,7 +138,7 @@ class ProductController extends Controller
                 'galleries','tagged','files', 'extraFields', 'extraFields.field']),
             'imageCategories' => $imageCategories,
             'extraFields' => $extraFieldService->model->filter($filters)->get(),
-            'config' => Config::get('products.items'),
+            'config' => array_merge(Config::get('products.items'), Config::get('products.money')),
             'tags' => $this->productService->model->existingTags(),
             'settings' => SettingsManagerService::get('products'),
             'connectors' => ItemConnector::connectors(),

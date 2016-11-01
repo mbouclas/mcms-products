@@ -2,6 +2,8 @@
 
 namespace Mcms\Products\Models;
 use Carbon\Carbon;
+use Clicknow\Money\Currency;
+use Clicknow\Money\Money;
 use Config;
 use Conner\Tagging\Taggable;
 use IdeaSeven\Core\Traits\ExtraFields;
@@ -68,7 +70,6 @@ class Product extends Model
         'description_long' => 'array',
         'settings' => 'array',
         'thumb' => 'array',
-        'price' => 'integer',
         'active' => 'boolean'
     ];
 
@@ -90,6 +91,9 @@ class Product extends Model
     protected $featuredModel;
     protected $relatedModel;
     protected $extraFieldModel;
+    protected $priceDivideBy = 100;
+    protected $priceDecimals = 2;
+    protected $currency = 'EUR';
     public $config;
     public $route;
     protected $defaultRoute = 'product';
@@ -97,7 +101,9 @@ class Product extends Model
     public function __construct($attributes = [])
     {
         parent::__construct($attributes);
-
+        $this->priceDivideBy = Config::has('products.money.divideBy') ? Config::get('products.money.divideBy') : $this->priceDivideBy;
+        $this->priceDecimals = Config::has('products.money.decimals') ? Config::get('products.money.decimals') : $this->priceDecimals;
+        $this->currency = Config::has('products.money.currency') ? Config::get('products.money.currency') : $this->currency;
         $this->config = Config::get('products.items');
         $this->defaultRoute = (isset($this->config['route'])) ? $this->config['route'] : $this->defaultRoute;
         $this->slugPattern = Config::get($this->slugPattern);
@@ -113,13 +119,10 @@ class Product extends Model
         }
     }
 
-    private function assignMethod($class)
-    {
-        $child_class_functions = get_class_methods($class);
 
-        foreach ($child_class_functions as $f){
-//            $this->setAttribute($f, $c->$f);
-        }
+    public function getPriceAttribute($price)
+    {
+        return new Money($price, new Currency($this->currency));
     }
 
 
@@ -229,6 +232,20 @@ class Product extends Model
     {
         return $this->hasMany(ExtraFieldValue::class, 'item_id')
             ->where('model', get_class($this));
+    }
+
+    /**
+     * @param null $currency
+     * @return string
+     */
+    public function toMoney($currency = null)
+    {
+        if ( ! $currency) {
+            return $this->price->format();
+        }
+
+        return (new Money($this->price->getAmount(), new Currency($currency)))->format();
+
     }
 
     public function newCollection(array $models = []){

@@ -1,11 +1,10 @@
 <div class="md-dialog-content">
 
     <form ng-submit=" VM.save()" novalidate name="ItemForm">
-        <md-tabs md-dynamic-height md-border-bottom md-autoselect>
+        <md-tabs md-dynamic-height md-border-bottom md-autoselect md-selected="VM.selectedTab">
             <md-tab label="{{ tab.label }}"
                     ng-repeat="tab in VM.tabs"
-                    md-active="tab.active"
-                    ng-if="VM[tab.acl] || true">
+                    md-active="tab.active">
                     <md-content class="md-padding" flex>
 <ng-include src="tab.file"></ng-include>
                     </md-content>

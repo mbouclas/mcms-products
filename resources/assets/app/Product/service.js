@@ -24,7 +24,8 @@
         this.availableFilters = availableFilters;
         this.previewUrl = previewUrl;
         this.extraFields = extraFields;
-
+        this.formatProductAccessor = formatProductAccessor;
+        this.formatProductMutator = formatProductMutator;
 
         function init(filters) {
 
@@ -65,7 +66,7 @@
                     SEO.init(response.seoFields);
                     Tags.set(response.tags);
                     ExtraFields = ExtraFieldService.convertFieldsFromMysql(response.extraFields);
-                    return response.item || newProduct();
+                    return formatProductAccessor(response.item) || newProduct();
                 });
         }
 
@@ -90,11 +91,13 @@
         }
 
         function save(item) {
+            var toSave = angular.copy(item);
+            toSave = formatProductMutator(toSave);
             if (!item.id){
-                return DS.store(item);
+                return DS.store(toSave);
             }
 
-            return DS.update(item);
+            return DS.update(toSave);
         }
 
         function destroy(item) {
@@ -131,6 +134,24 @@
 
         function previewUrl(id) {
             return DS.previewUrl(id);
+        }
+
+        function formatProductAccessor(item) {
+            if (lo.isNull(item)){
+                return item;
+            }
+            if (lo.isObject(item.price)){
+                var precision = item.price.currency[Object.keys(item.price.currency)[0]].precision || 2;
+                item.price = parseFloat(item.price.amount/100).toFixed(precision);
+            }
+
+            return item;
+        }
+
+        function formatProductMutator(item) {
+            item.price = parseInt(item.price*100);
+
+            return item;
         }
     }
 })();

@@ -15,8 +15,6 @@ use IdeaSeven\Core\QueryFilters\QueryFilters;
 
 class ProductFilters extends QueryFilters
 {
-    use FilterableDate, FilterableOrderBy, FilterableLimit, FilterableExtraFields;
-    
     /**
      * @var array
      */
@@ -33,8 +31,12 @@ class ProductFilters extends QueryFilters
         'category_id',
         'orderBy',
         'extraFields',
+        'minPricce',
+        'maxPrice',
         'q',
     ];
+
+    use FilterableDate, FilterableOrderBy, FilterableLimit, FilterableExtraFields;
 
     /**
      * @example ?id=1,0
@@ -164,6 +166,23 @@ class ProductFilters extends QueryFilters
         });
     }
 
+    public function minPrice($minPrice = null)
+    {
+        if ( ! $minPrice){
+            return $this->builder;
+        }
+
+        return $this->builder->where('price', '>=', (int) $minPrice);
+    }
+
+    public function maxPrice($maxPrice = null)
+    {
+        if ( ! $maxPrice){
+            return $this->builder;
+        }
+
+        return $this->builder->where('price', '>=', (int) $maxPrice);
+    }
 
     public function q($q = null)
     {

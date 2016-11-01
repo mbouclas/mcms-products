@@ -4,6 +4,11 @@ return [
     'product' => \Mcms\Products\Models\Product::class,
     'related' => \Mcms\Products\Models\Related::class,
     'featured' => \Mcms\Products\Models\Featured::class,
+    'money' => [
+        'decimals' => 2,
+        'divideBy' => 100,
+        'currency' => 'EUR'
+    ],
     'items' => [
         'slug_pattern' => '/product/%slug$s',
         'previewController' => '\FrontEnd\Http\Controllers\HomeController@preview',

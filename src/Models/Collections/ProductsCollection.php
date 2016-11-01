@@ -13,5 +13,8 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class ProductsCollection extends Collection
 {
+    public function format_price()
+    {
 
+    }
 }
