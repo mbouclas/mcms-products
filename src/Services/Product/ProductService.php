@@ -6,14 +6,14 @@ namespace Mcms\Products\Services\Product;
 use App;
 use Config;
 use Event;
-use IdeaSeven\Core\Helpers\Strings;
-use IdeaSeven\Core\Models\Image;
-use IdeaSeven\Core\Models\MenuItem;
+use Mcms\Core\Helpers\Strings;
+use Mcms\Core\Models\Image;
+use Mcms\Core\Models\MenuItem;
 
-use IdeaSeven\Core\QueryFilters\Filterable;
-use IdeaSeven\Core\Services\Image\GroupImagesByType;
-use IdeaSeven\Core\Traits\FixTags;
-use IdeaSeven\FrontEnd\Services\PermalinkArchive;
+use Mcms\Core\QueryFilters\Filterable;
+use Mcms\Core\Services\Image\GroupImagesByType;
+use Mcms\Core\Traits\FixTags;
+use Mcms\FrontEnd\Services\PermalinkArchive;
 use Mcms\Products\Exceptions\InvalidProductFormatException;
 use Mcms\Products\Models\Featured;
 use Mcms\Products\Models\Product;
@@ -204,7 +204,7 @@ class ProductService
      */
     private function saveRelated(array $product, Product $Product)
     {
-        if ( ! isset($product['related']) || ! is_array($product['related']) || count($product['related']) == 0){
+        if ( ! isset($product['related']) || ! is_array($product['related'])  ){
             return $Product;
         }
 

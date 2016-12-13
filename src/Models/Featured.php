@@ -3,7 +3,7 @@
 namespace Mcms\Products\Models;
 
 use Config;
-use IdeaSeven\Core\Models\Featured as BaseFeatured;
+use Mcms\Core\Models\Featured as BaseFeatured;
 
 
 /**

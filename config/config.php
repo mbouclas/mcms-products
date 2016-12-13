@@ -17,6 +17,7 @@ return [
             'optimize' => true,
             'dirPattern' => 'products/product_%id$s',
             'filePattern' => '',
+            'recommendedSize' => '700x700',
             'types' => [
                 [
                     'uploadAs' => 'image',
@@ -50,6 +51,7 @@ return [
                     'quality' => 100,
                     'prefix' => 't1_',
                     'resizeType' => 'fit',
+                    'useOnAdmin' => true,
                     'dir' => 'big_thumbs/',
                 ],
                 'main' => [

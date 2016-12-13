@@ -3,7 +3,7 @@
 namespace Mcms\Products\Models;
 
 use Config;
-use IdeaSeven\Core\Models\ExtraField as BaseExtraField;
+use Mcms\Core\Models\ExtraField as BaseExtraField;
 
 
 /**

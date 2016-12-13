@@ -5,9 +5,9 @@ namespace Mcms\Products\Services\Product;
 
 use App;
 use Config;
-use IdeaSeven\Core\Helpers\Strings;
-use IdeaSeven\Core\Services\File\BaseFileConfigurator;
-use IdeaSeven\Core\Services\Image\ImageConfiguratorConfigurable;
+use Mcms\Core\Helpers\Strings;
+use Mcms\Core\Services\File\BaseFileConfigurator;
+use Mcms\Core\Services\Image\ImageConfiguratorConfigurable;
 use Mcms\Products\Models\Product;
 
 class FileConfigurator extends BaseFileConfigurator

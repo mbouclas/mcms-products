@@ -11,7 +11,7 @@
         $routeProvider
             .when('/products/extraFields', {
                 templateUrl:  Config.templatesDir + 'ExtraFields/index.html',
-                controller: 'ExtraFieldHomeController',
+                controller: 'ProductsExtraFieldHomeController',
                 controllerAs: 'VM',
                 reloadOnSearch : true,
                 resolve: {

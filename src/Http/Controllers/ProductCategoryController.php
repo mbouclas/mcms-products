@@ -4,7 +4,7 @@ namespace Mcms\Products\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Config;
-use IdeaSeven\Core\Services\SettingsManager\SettingsManagerService;
+use Mcms\Core\Services\SettingsManager\SettingsManagerService;
 use Mcms\Products\Services\ProductCategory\ProductCategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

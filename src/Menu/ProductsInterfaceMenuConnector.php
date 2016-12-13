@@ -6,7 +6,7 @@ use Mcms\Products\Models\Filters\ProductFilters;
 use Mcms\Products\Models\Product;
 use Mcms\Products\Models\ProductCategory;
 use Illuminate\Http\Request;
-use IdeaSeven\Core\Services\Menu\AdminInterfaceConnector;
+use Mcms\Core\Services\Menu\AdminInterfaceConnector;
 use Illuminate\Support\Collection;
 
 

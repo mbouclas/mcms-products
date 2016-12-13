@@ -385,7 +385,7 @@ require('./ExtraFieldHomeController');
             vm.SEO = SEO.fields();
             vm.Parent = $scope.addTo || null;
             vm.thumbUploadOptions.params.item_id = item.id;
-            vm.thumbUploadOptions.params.configurator = '\\IdeaSeven\\Products\\Services\\ProductCategory\\ImageConfigurator';
+            vm.thumbUploadOptions.params.configurator = '\\Mcms\\Products\\Services\\ProductCategory\\ImageConfigurator';
             vm.thumbUploadOptions.params.type = 'thumb';
             vm.Settings = SM.get({name : 'productCategories'});
             LMS.setModel(vm.Item);
@@ -933,7 +933,7 @@ require('./editProductCategory.component');
                                  moment, ModuleExtender, MLS, ExtraFieldService) {
         var vm = this,
             autoSaveHooks = [],
-            Model = '\\IdeaSeven\\Products\\Models\\Product';
+            Model = '\\Mcms\\Products\\Models\\Product';
 
         vm.published_at = {};
         vm.Lang = Lang;
@@ -1660,8 +1660,8 @@ require('./Widgets/latestProducts.widget');
         templatesDir = '/package-products/app/templates/';
 
     var config = {
-        productModel : 'IdeaSeven\\\\Products\\\\Models\\\\Product',
-        productCategoryModel : 'IdeaSeven\\\\Products\\\\Models\\\\ProductCategory',
+        productModel : 'Mcms\\\\Products\\\\Models\\\\Product',
+        productCategoryModel : 'Mcms\\\\Products\\\\Models\\\\ProductCategory',
         apiUrl : '/api/',
         prefixUrl : '/admin',
         previewUrl : '/admin/api/product/preview/',

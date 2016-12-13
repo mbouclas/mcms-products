@@ -6,9 +6,9 @@ namespace Mcms\Products\Installer;
 use Mcms\Products\Installer\AfterUpdate\CreateMissingTable;
 use Mcms\Products\Installer\AfterUpdate\PublishMissingConfig;
 use Mcms\Products\Installer\AfterUpdate\PublishMissingMigrations;
-use IdeaSeven\Core\Exceptions\ErrorDuringUpdateException;
-use IdeaSeven\Core\Helpers\Installer;
-use IdeaSeven\Core\UpdatesLog\UpdatesLog;
+use Mcms\Core\Exceptions\ErrorDuringUpdateException;
+use Mcms\Core\Helpers\Installer;
+use Mcms\Core\UpdatesLog\UpdatesLog;
 use Illuminate\Console\Command;
 
 class ActionsAfterUpdate

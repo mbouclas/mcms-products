@@ -4,9 +4,9 @@ namespace Mcms\Products\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Config;
-use IdeaSeven\Core\ExtraFields\ExtraFields;
-use IdeaSeven\Core\Models\Filters\ExtraFieldFilters;
-use IdeaSeven\Core\Services\SettingsManager\SettingsManagerService;
+use Mcms\Core\ExtraFields\ExtraFields;
+use Mcms\Core\Models\Filters\ExtraFieldFilters;
+use Mcms\Core\Services\SettingsManager\SettingsManagerService;
 use Mcms\Products\Models\Filters\ProductFilters;
 use Mcms\Products\Models\Product;
 use Mcms\Products\Models\ProductCategory;
@@ -138,6 +138,7 @@ class ProductController extends Controller
                 'galleries','tagged','files', 'extraFields', 'extraFields.field']),
             'imageCategories' => $imageCategories,
             'extraFields' => $extraFieldService->model->filter($filters)->get(),
+            'imageCopies' => Config::get('products.items.images'),
             'config' => array_merge(Config::get('products.items'), Config::get('products.money')),
             'tags' => $this->productService->model->existingTags(),
             'settings' => SettingsManagerService::get('products'),

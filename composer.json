@@ -25,15 +25,15 @@
     },
     "autoload": {
         "psr-4": {
-            "IdeaSeven\\Products\\": "src"
+            "Mcms\\Products\\": "src"
         },
         "psr-0": {
-            "IdeaSeven\\Products": "src/"
+            "Mcms\\Products": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "IdeaSeven\\Products\\": "tests"
+            "Mcms\\Products\\": "tests"
         }
     },
     "scripts": {

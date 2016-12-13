@@ -3,7 +3,7 @@
 namespace Mcms\Products\Installer;
 
 
-use IdeaSeven\Core\Services\Installer\InstallerContract;
+use Mcms\Core\Services\Installer\InstallerContract;
 use Illuminate\Console\Command;
 
 class Install implements InstallerContract

@@ -13,7 +13,9 @@
         var _this = this,
             Filters = {},
             ExtraFields = [],
-            Products = [];
+            Products = [],
+            ImageSettings = {},
+            ImageCopies = [];
 
         this.get = get;
         this.init = init;
@@ -26,6 +28,7 @@
         this.extraFields = extraFields;
         this.formatProductAccessor = formatProductAccessor;
         this.formatProductMutator = formatProductMutator;
+        this.imageSettings = imageSettings;
 
         function init(filters) {
 
@@ -63,6 +66,7 @@
                     if (typeof response.config == 'undefined' || typeof response.config.previewController == 'undefined'){
                         Config.previewUrl = null;
                     }
+                    imageSettings().set(response.imageCopies);
                     SEO.init(response.seoFields);
                     Tags.set(response.tags);
                     ExtraFields = ExtraFieldService.convertFieldsFromMysql(response.extraFields);
@@ -152,6 +156,25 @@
             item.price = parseInt(item.price*100);
 
             return item;
+        }
+
+        function imageSettings() {
+            return {
+                set : function(val){
+                    ImageSettings = val;
+                    lo.forEach(val.copies, function (copy, key) {
+                        copy.key = key;
+                        ImageCopies.push(copy);
+                    });
+                },
+                recommendedSizeLabel : function(){
+                    return ImageSettings.recommendedSize || null;
+                },
+                adminCopy : function () {
+                    var copy = lo.find(ImageCopies, {useOnAdmin : true});
+                    return (copy) ? copy.key : 'thumb';
+                }
+            };
         }
     }
 })();

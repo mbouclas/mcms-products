@@ -2,7 +2,7 @@
 
 namespace Mcms\Products\Presenters;
 use App;
-use IdeaSeven\Core\Services\Presenter\Presenter;
+use Mcms\Core\Services\Presenter\Presenter;
 use Mcms\Products\Models\ProductCategory;
 
 /**

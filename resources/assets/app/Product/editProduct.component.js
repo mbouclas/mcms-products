@@ -24,9 +24,9 @@
             restrict: 'E',
             link: function (scope, element, attrs, controllers) {
                 var defaults = {
-                    hasFilters: true
+                    hasFilters: true,
+                    isWindow : false
                 };
-
 
                 scope.refreshIframe = function () {
                     var iframe = document.getElementById('preview');
@@ -59,7 +59,7 @@
         var vm = this,
             autoSaveHooks = [],
             Model = '\\Mcms\\Products\\Models\\Product';
-        vm.selectedTab = 0;
+
         vm.published_at = {};
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
@@ -72,8 +72,7 @@
         vm.isSu = ACL.role('su');//more efficient check
         vm.isAdmin = ACL.role('admin');//more efficient check
 
-
-        var Tabs = [
+        vm.tabs = [
             {
                 label : 'General',
                 file : ProductsConfig.templatesDir + 'Product/Components/tab-general-info.html',
@@ -95,8 +94,7 @@
                 active : false,
                 default : false,
                 id : 'imageGallery',
-                order : 30,
-                ifId : true
+                order : 30
             },
             {
                 label : 'Files',
@@ -104,24 +102,21 @@
                 active : false,
                 default : false,
                 id : 'fileGallery',
-                order : 40,
-                ifId : true
+                order : 40
             },
             {
                 label : 'Extra Fields',
                 file : ProductsConfig.templatesDir + 'Product/Components/tab-extra-fields.html',
                 active : false,
                 id : 'extraFields',
-                order : 45,
-                ifId : true
+                order : 45
             },
             {
                 label : 'Related Items',
                 file : ProductsConfig.templatesDir + 'Product/Components/tab-related-items.html',
                 active : false,
                 id : 'related',
-                order : 50,
-                ifId : true
+                order : 50
             },
             {
                 label : 'SEO',
@@ -132,7 +127,12 @@
             }
         ];
 
-
+        vm.tabs = ModuleExtender.extend('products', vm.tabs);
+        if (Lang.allLocales().length == 1){
+            //remove the translation tab
+            var tabIndex = lo.findIndex(vm.tabs, {id : 'translations'});
+            vm.tabs.splice(tabIndex, 1);
+        }
         vm.Categories = [];
         vm.thumbUploadOptions = {
             url : Config.imageUploadUrl,
@@ -194,6 +194,8 @@
             }
 
             if (!$scope.ItemForm.$valid){
+                console.log('here');
+
                 Helpers.toast($scope.ItemForm.$error.required.length + ' Errors found, please fill all required fields', null, 5000, 'error');
                 vm.errorsFound = true;
 
@@ -208,8 +210,7 @@
 
             return Product.save(vm.Item)
                 .then(function (result) {
-                   Helpers.toast('Saved!', null, null, 'success');
-                    result = Product.formatProductAccessor(result);
+                    Helpers.toast('Saved!', null, null, 'success');
 
                     if (isNew){
                         vm.Item = result;
@@ -301,12 +302,19 @@
             if (lo.isArray(vm.Item.categories) && vm.Item.categories.length > 0){
                 vm.categoriesValid = true;
             }
-            vm.ExtraFields = Product.extraFields();
-            vm.tabs = ModuleExtender.extend('products', vm.tabs);
-            vm.tabs = validateTabs();
 
-
+            vm.filterExtraFields();
+            vm.adminSize = Product.imageSettings().adminCopy();
+            vm.recommendedSizeLabel = Product.imageSettings().recommendedSizeLabel();
         }
+
+        vm.filterExtraFields = function() {
+            var layout = (typeof vm.Item.settings.Layout.id != 'undefined') ? vm.Item.settings.Layout.id : null;
+
+            vm.ExtraFields = ExtraFieldService
+                .filter(Product.extraFields())
+                .whereIn('layoutId', layout);
+        };
 
 
 
@@ -314,8 +322,8 @@
             timer = null;
 
         /*
-        * autosave
-        * */
+         * autosave
+         * */
         watcher = $scope.$watch(angular.bind(vm, function () {
             var publishDate = Helpers.deComposeDate(vm.publish_at);
             if (publishDate.isAfter(moment())){
@@ -370,34 +378,6 @@
                     Helpers.toast('Saved!!!');
                 });
         };
-
-
-        function validateTabs() {
-            if (Lang.allLocales().length == 1){
-                //remove the translation tab
-                var tabIndex = lo.findIndex(Tabs, {id : 'translations'});
-                Tabs.splice(tabIndex, 1);
-            }
-            var tabs = [];
-            lo.forEach(Tabs, function (tab, $index) {
-                if (typeof tab == 'undefined'){
-                    return;
-                }
-
-                //check permissions
-                if (typeof tab.acl != 'undefined' && !vm[tab.acl]){
-                    return
-                }
-                //check if id is there
-                if (typeof tab.ifId != 'undefined' && (!vm.Item.id && tab.ifId)){
-                    return;
-                }
-
-                tabs.push(tab);
-            });
-
-            return tabs;
-        }
 
     }
 })();

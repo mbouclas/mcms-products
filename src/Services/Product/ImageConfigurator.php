@@ -5,9 +5,9 @@ namespace Mcms\Products\Services\Product;
 
 use App;
 use Config;
-use IdeaSeven\Core\Helpers\Strings;
-use IdeaSeven\Core\Services\Image\ImageConfiguratorConfigurable;
-use IdeaSeven\Core\Services\Image\ImageConfiguratorContract;
+use Mcms\Core\Helpers\Strings;
+use Mcms\Core\Services\Image\ImageConfiguratorConfigurable;
+use Mcms\Core\Services\Image\ImageConfiguratorContract;
 use Mcms\Products\Models\Product;
 
 /**

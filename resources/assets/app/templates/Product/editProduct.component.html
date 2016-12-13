@@ -12,21 +12,30 @@
 
         </md-tabs>
 
+        <div class="alert alert-danger" ng-if="ItemForm.$error.required.length > 0">
+            <h5>You have {{ ItemForm.$error.required.length }} errors</h5>
+            <ul>
+                <li ng-repeat="(key, errors) in ItemForm.$error track by $index"> <strong>{{ key }}</strong> errors
+                    <ul>
+                        <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
         <div class="alert alert-danger" ng-if="VM.errorsFound">
             <h5>You have {{ ItemForm.$error.required.length }} errors</h5>
-            <div ng-if="ItemForm.categoriesValid.$error">
-                <strong>*</strong> At least one category is required
-            </div>
-            <div ng-messages="ItemForm.title.$error">
-                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
-            </div>
-            <div ng-messages="ItemForm.slug.$error">
-                <strong>*</strong> Permalink is required
-            </div>
+            <ul>
+                <li ng-repeat="(key, errors) in ItemForm.$error track by $index"
+                > <strong>{{ key }}</strong> errors
+                    <ul>
+                        <li ng-repeat="e in errors">
+                            {{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+                    </ul>
+                </li>
+            </ul>
 
-            <div ng-messages="ItemForm.price.$error">
-                <strong>*</strong> Price is required
-            </div>
         </div>
 
         <md-button type="submit" class="md-accent md-raised">

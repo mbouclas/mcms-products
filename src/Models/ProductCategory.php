@@ -5,16 +5,16 @@ namespace Mcms\Products\Models;
 
 use Config;
 use DB;
-use IdeaSeven\Core\Models\Image;
-use IdeaSeven\Core\Traits\Featurable;
-use IdeaSeven\Core\Traits\Presentable;
-use IdeaSeven\Core\Traits\Userable;
+use Mcms\Core\Models\Image;
+use Mcms\Core\Traits\Featurable;
+use Mcms\Core\Traits\Presentable;
+use Mcms\Core\Traits\Userable;
 use Mcms\Products\Models\Collections\ProductCategoriesCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Themsaid\Multilingual\Translatable;
 use Kalnoy\Nestedset\NodeTrait;
-use IdeaSeven\FrontEnd\Helpers\Sluggable;
+use Mcms\FrontEnd\Helpers\Sluggable;
 
 class ProductCategory extends Model
 {

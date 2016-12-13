@@ -3,7 +3,7 @@
 namespace Mcms\Products\Models;
 
 use Config;
-use IdeaSeven\Core\Models\Related as BaseRelated;
+use Mcms\Core\Models\Related as BaseRelated;
 
 
 /**
