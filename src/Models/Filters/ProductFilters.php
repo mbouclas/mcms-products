@@ -107,7 +107,7 @@ class ProductFilters extends QueryFilters
             return $this->builder;
         }
 
-        $title = strtolower($title);
+        $title = mb_strtolower($title);
         return $this->builder->whereRaw((\DB::raw("LOWER(`title`->'$.\"{$locale}\"') LIKE '%{$title}%'")));
     }
 
@@ -131,7 +131,7 @@ class ProductFilters extends QueryFilters
             return $this->builder;
         }
 
-        $description = strtolower($description);
+        $description = mb_strtolower($description);
         return $this->builder->whereRaw((\DB::raw("LOWER(`description`->'$.\"{$locale}\"') LIKE '%{$description}%'")));
     }
 
@@ -146,7 +146,7 @@ class ProductFilters extends QueryFilters
             return $this->builder;
         }
 
-        $description_long = strtolower($description_long);
+        $description_long = mb_strtolower($description_long);
         return $this->builder->whereRaw((\DB::raw("LOWER(`description_long`->'$.\"{$locale}\"') LIKE '%{$description_long}%'")));
 
     }
@@ -197,7 +197,7 @@ class ProductFilters extends QueryFilters
         $locale = App::getLocale();
 
         return $this->builder->where(function($query) use ($q, $locale) {
-            $q = strtolower($q);
+            $q = mb_strtolower($q);
             $query->orWhereRaw(\DB::raw("LOWER(`title`->'$.\"{$locale}\"') LIKE '%{$q}%'"));
             $query->orWhereRaw(\DB::raw("LOWER(`description`->'$.\"{$locale}\"') LIKE '%{$q}%'"));
             $query->orWhereRaw(\DB::raw("LOWER(`description_long`->'$.\"{$locale}\"') LIKE '%{$q}%'"));
