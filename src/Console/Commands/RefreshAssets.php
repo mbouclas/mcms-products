@@ -42,7 +42,7 @@ class RefreshAssets extends Command
     {
         //remove the package directory
         $this->info('Removing old assets');
-        File::deleteDirectory(public_path('package-products'));
+        File::deleteDirectory(public_path('vendor/mcms/products'));
         //bring the new assets into play
         $this->comment('done');
         $this->info('copying new assets');
