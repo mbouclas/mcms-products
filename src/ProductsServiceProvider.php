@@ -58,11 +58,11 @@ class ProductsServiceProvider extends ServiceProvider
         ], 'lang');
 
         $this->publishes([
-            __DIR__ . '/../resources/public' => public_path('package-products'),
+            __DIR__ . '/../resources/public' => public_path('vendor/mcms/products'),
         ], 'public');
 
         $this->publishes([
-            __DIR__ . '/../resources/assets' => public_path('package-products'),
+            __DIR__ . '/../resources/assets' => public_path('vendor/mcms/products'),
         ], 'assets');
 
         $this->publishes([
