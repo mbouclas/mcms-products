@@ -3,15 +3,32 @@
     'use strict';
 
     angular.module('mcms.products.extraFields')
-        .controller('ExtraFieldHomeController',Controller);
+        .controller('ProductsExtraFieldHomeController',Controller);
 
-    Controller.$inject = ['PRODUCTS_CONFIG'];
+    Controller.$inject = ['PRODUCTS_CONFIG', 'LayoutManagerService'];
 
-    function Controller(Config) {
+    function Controller(Config, LMS) {
         var vm = this;
-        vm.Model = Config.productModel;
-    }
+        var layouts = [],
+            allLayouts = LMS.layouts('products.items');
 
+        for (var i in allLayouts){
+            layouts.push({
+                label : allLayouts[i].label,
+                value : allLayouts[i].varName,
+            });
+        }
+
+        vm.Model = Config.productModel;
+        vm.additionalFields = [
+            {
+                varName : 'layoutId',
+                label : 'Layout',
+                type : 'selectMultiple',
+                options : layouts
+            }
+        ];
+    }
 })();
 
 },{}],2:[function(require,module,exports){
@@ -38,7 +55,7 @@ require('./ExtraFieldHomeController');
         $routeProvider
             .when('/products/extraFields', {
                 templateUrl:  Config.templatesDir + 'ExtraFields/index.html',
-                controller: 'ExtraFieldHomeController',
+                controller: 'ProductsExtraFieldHomeController',
                 controllerAs: 'VM',
                 reloadOnSearch : true,
                 resolve: {
@@ -392,7 +409,6 @@ require('./ExtraFieldHomeController');
         }
     }
 })();
-
 },{}],7:[function(require,module,exports){
 (function(){
     'use strict';
@@ -899,9 +915,9 @@ require('./editProductCategory.component');
             restrict: 'E',
             link: function (scope, element, attrs, controllers) {
                 var defaults = {
-                    hasFilters: true
+                    hasFilters: true,
+                    isWindow : false
                 };
-
 
                 scope.refreshIframe = function () {
                     var iframe = document.getElementById('preview');
@@ -946,7 +962,6 @@ require('./editProductCategory.component');
         vm.Permissions = ACL.permissions();
         vm.isSu = ACL.role('su');//more efficient check
         vm.isAdmin = ACL.role('admin');//more efficient check
-
 
         vm.tabs = [
             {
@@ -1070,6 +1085,8 @@ require('./editProductCategory.component');
             }
 
             if (!$scope.ItemForm.$valid){
+                console.log('here');
+
                 Helpers.toast($scope.ItemForm.$error.required.length + ' Errors found, please fill all required fields', null, 5000, 'error');
                 vm.errorsFound = true;
 
@@ -1084,7 +1101,7 @@ require('./editProductCategory.component');
 
             return Product.save(vm.Item)
                 .then(function (result) {
-                   Helpers.toast('Saved!', null, null, 'success');
+                    Helpers.toast('Saved!', null, null, 'success');
 
                     if (isNew){
                         vm.Item = result;
@@ -1176,8 +1193,19 @@ require('./editProductCategory.component');
             if (lo.isArray(vm.Item.categories) && vm.Item.categories.length > 0){
                 vm.categoriesValid = true;
             }
-            vm.ExtraFields = Product.extraFields();
+
+            vm.filterExtraFields();
+            vm.adminSize = Product.imageSettings().adminCopy();
+            vm.recommendedSizeLabel = Product.imageSettings().recommendedSizeLabel();
         }
+
+        vm.filterExtraFields = function() {
+            var layout = (typeof vm.Item.settings.Layout.id != 'undefined') ? vm.Item.settings.Layout.id : null;
+
+            vm.ExtraFields = ExtraFieldService
+                .filter(Product.extraFields())
+                .whereIn('layoutId', layout);
+        };
 
 
 
@@ -1185,8 +1213,8 @@ require('./editProductCategory.component');
             timer = null;
 
         /*
-        * autosave
-        * */
+         * autosave
+         * */
         watcher = $scope.$watch(angular.bind(vm, function () {
             var publishDate = Helpers.deComposeDate(vm.publish_at);
             if (publishDate.isAfter(moment())){
@@ -1530,7 +1558,9 @@ require('./Widgets/latestProducts.widget');
         var _this = this,
             Filters = {},
             ExtraFields = [],
-            Products = [];
+            Products = [],
+            ImageSettings = {},
+            ImageCopies = [];
 
         this.get = get;
         this.init = init;
@@ -1541,7 +1571,9 @@ require('./Widgets/latestProducts.widget');
         this.availableFilters = availableFilters;
         this.previewUrl = previewUrl;
         this.extraFields = extraFields;
-
+        this.formatProductAccessor = formatProductAccessor;
+        this.formatProductMutator = formatProductMutator;
+        this.imageSettings = imageSettings;
 
         function init(filters) {
 
@@ -1579,10 +1611,11 @@ require('./Widgets/latestProducts.widget');
                     if (typeof response.config == 'undefined' || typeof response.config.previewController == 'undefined'){
                         Config.previewUrl = null;
                     }
+                    imageSettings().set(response.imageCopies);
                     SEO.init(response.seoFields);
                     Tags.set(response.tags);
                     ExtraFields = ExtraFieldService.convertFieldsFromMysql(response.extraFields);
-                    return response.item || newProduct();
+                    return formatProductAccessor(response.item) || newProduct();
                 });
         }
 
@@ -1593,6 +1626,7 @@ require('./Widgets/latestProducts.widget');
                 description : Lang.langFields(),
                 description_long : Lang.langFields(),
                 active : false,
+                price : 0,
                 categories : [],
                 extraFields : [],
                 tagged : [],
@@ -1606,11 +1640,13 @@ require('./Widgets/latestProducts.widget');
         }
 
         function save(item) {
+            var toSave = angular.copy(item);
+            toSave = formatProductMutator(toSave);
             if (!item.id){
-                return DS.store(item);
+                return DS.store(toSave);
             }
 
-            return DS.update(item);
+            return DS.update(toSave);
         }
 
         function destroy(item) {
@@ -1648,6 +1684,43 @@ require('./Widgets/latestProducts.widget');
         function previewUrl(id) {
             return DS.previewUrl(id);
         }
+
+        function formatProductAccessor(item) {
+            if (lo.isNull(item)){
+                return item;
+            }
+            if (lo.isObject(item.price)){
+                var precision = item.price.currency[Object.keys(item.price.currency)[0]].precision || 2;
+                item.price = parseFloat(item.price.amount/100).toFixed(precision);
+            }
+
+            return item;
+        }
+
+        function formatProductMutator(item) {
+            item.price = parseInt(item.price*100);
+
+            return item;
+        }
+
+        function imageSettings() {
+            return {
+                set : function(val){
+                    ImageSettings = val;
+                    lo.forEach(val.copies, function (copy, key) {
+                        copy.key = key;
+                        ImageCopies.push(copy);
+                    });
+                },
+                recommendedSizeLabel : function(){
+                    return ImageSettings.recommendedSize || null;
+                },
+                adminCopy : function () {
+                    var copy = lo.find(ImageCopies, {useOnAdmin : true});
+                    return (copy) ? copy.key : 'thumb';
+                }
+            };
+        }
     }
 })();
 
@@ -1657,7 +1730,7 @@ require('./Widgets/latestProducts.widget');
     var assetsUrl = '/assets/',
         appUrl = '/app/',
         componentsUrl = appUrl + 'Components/',
-        templatesDir = '/package-products/app/templates/';
+        templatesDir = '/vendor/mcms/products/app/templates/';
 
     var config = {
         productModel : 'Mcms\\\\Products\\\\Models\\\\Product',
@@ -1719,9 +1792,9 @@ require('./Widgets/latestProducts.widget');
 
         Menu.addMenu(Menu.newItem({
             id: 'products',
-            title: 'CMS',
+            title: 'Products',
             permalink: '',
-            icon: 'products',
+            icon: 'shopping_cart',
             order: 1,
             acl: {
                 type: 'level',
@@ -1734,7 +1807,7 @@ require('./Widgets/latestProducts.widget');
         productsMenu.addChildren([
             Menu.newItem({
                 id: 'products-manager',
-                title: 'Products',
+                title: 'Catalogue',
                 permalink: '/products/content',
                 icon: 'content_copy',
                 order : 2

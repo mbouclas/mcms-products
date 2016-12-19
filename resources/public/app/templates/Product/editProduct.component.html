@@ -1,11 +1,10 @@
 <div class="md-dialog-content">
 
     <form ng-submit=" VM.save()" novalidate name="ItemForm">
-        <md-tabs md-dynamic-height md-border-bottom md-autoselect>
+        <md-tabs md-dynamic-height md-border-bottom md-autoselect md-selected="VM.selectedTab">
             <md-tab label="{{ tab.label }}"
                     ng-repeat="tab in VM.tabs"
-                    md-active="tab.active"
-                    ng-if="VM[tab.acl] || true">
+                    md-active="tab.active">
                     <md-content class="md-padding" flex>
 <ng-include src="tab.file"></ng-include>
                     </md-content>
@@ -13,17 +12,30 @@
 
         </md-tabs>
 
+        <div class="alert alert-danger" ng-if="ItemForm.$error.required.length > 0">
+            <h5>You have {{ ItemForm.$error.required.length }} errors</h5>
+            <ul>
+                <li ng-repeat="(key, errors) in ItemForm.$error track by $index"> <strong>{{ key }}</strong> errors
+                    <ul>
+                        <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
         <div class="alert alert-danger" ng-if="VM.errorsFound">
             <h5>You have {{ ItemForm.$error.required.length }} errors</h5>
-            <div ng-if="ItemForm.categoriesValid.$error">
-                <strong>*</strong> At least one category is required
-            </div>
-            <div ng-messages="ItemForm.title.$error">
-                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
-            </div>
-            <div ng-messages="ItemForm.permalink.$error">
-                <strong>*</strong> Permalink is required
-            </div>
+            <ul>
+                <li ng-repeat="(key, errors) in ItemForm.$error track by $index"
+                > <strong>{{ key }}</strong> errors
+                    <ul>
+                        <li ng-repeat="e in errors">
+                            {{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+                    </ul>
+                </li>
+            </ul>
+
         </div>
 
         <md-button type="submit" class="md-accent md-raised">
