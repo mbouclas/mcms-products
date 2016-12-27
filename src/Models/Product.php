@@ -49,7 +49,8 @@ class Product extends Model
         'user_id',
         'settings',
         'active',
-        'published_at'
+        'published_at',
+        'price'
     ];
 
     /**
