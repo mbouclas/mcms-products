@@ -1605,6 +1605,7 @@ require('./Widgets/latestProducts.widget');
         function find(id) {
             return DS.show(id)
                 .then(function (response) {
+
                     ItemSelector.register(response.connectors);
                     MediaFiles.setImageCategories(response.imageCategories);
                     SM.addSettingsItem(response.settings);
@@ -1689,9 +1690,14 @@ require('./Widgets/latestProducts.widget');
             if (lo.isNull(item)){
                 return item;
             }
+            
+            var precision = 2;
+
             if (lo.isObject(item.price)){
-                var precision = item.price.currency[Object.keys(item.price.currency)[0]].precision || 2;
+                precision = item.price.currency[Object.keys(item.price.currency)[0]].precision || 2;
                 item.price = parseFloat(item.price.amount/100).toFixed(precision);
+            } else if (lo.isNumber(item.price)) {
+                item.price = parseFloat(item.price/100).toFixed(precision);
             }
 
             return item;
