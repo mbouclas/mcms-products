@@ -79,6 +79,7 @@
             return {
                 title : Lang.langFields(),
                 slug : '',
+                sku : '',
                 description : Lang.langFields(),
                 description_long : Lang.langFields(),
                 active : false,
@@ -145,7 +146,7 @@
             if (lo.isNull(item)){
                 return item;
             }
-            
+
             var precision = 2;
 
             if (lo.isObject(item.price)){

@@ -50,7 +50,8 @@ class Product extends Model
         'settings',
         'active',
         'published_at',
-        'price'
+        'price',
+        'sku',
     ];
 
     /**

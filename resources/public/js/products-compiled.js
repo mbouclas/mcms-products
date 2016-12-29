@@ -1085,7 +1085,6 @@ require('./editProductCategory.component');
             }
 
             if (!$scope.ItemForm.$valid){
-                console.log('here');
 
                 Helpers.toast($scope.ItemForm.$error.required.length + ' Errors found, please fill all required fields', null, 5000, 'error');
                 vm.errorsFound = true;
@@ -1624,6 +1623,7 @@ require('./Widgets/latestProducts.widget');
             return {
                 title : Lang.langFields(),
                 slug : '',
+                sku : '',
                 description : Lang.langFields(),
                 description_long : Lang.langFields(),
                 active : false,
@@ -1690,7 +1690,7 @@ require('./Widgets/latestProducts.widget');
             if (lo.isNull(item)){
                 return item;
             }
-            
+
             var precision = 2;
 
             if (lo.isObject(item.price)){

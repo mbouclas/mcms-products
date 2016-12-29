@@ -52,6 +52,15 @@
             </md-switch>
 
             <md-input-container class="md-block" flex-gt-sm>
+                <label>SKU</label>
+                <input ng-model="VM.Item.sku"
+                       required name="sku">
+                <div ng-messages="ItemForm.sku.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
                 <label>Price</label>
                 <input ng-model="VM.Item.price"
                        required name="price">

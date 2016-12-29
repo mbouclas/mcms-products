@@ -194,7 +194,6 @@
             }
 
             if (!$scope.ItemForm.$valid){
-                console.log('here');
 
                 Helpers.toast($scope.ItemForm.$error.required.length + ' Errors found, please fill all required fields', null, 5000, 'error');
                 vm.errorsFound = true;
