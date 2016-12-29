@@ -3,6 +3,7 @@
 namespace Mcms\Products\Installer;
 
 
+use Mcms\Products\Installer\AfterUpdate\AlterTables;
 use Mcms\Products\Installer\AfterUpdate\CreateMissingTable;
 use Mcms\Products\Installer\AfterUpdate\PublishMissingConfig;
 use Mcms\Products\Installer\AfterUpdate\PublishMissingMigrations;
@@ -19,7 +20,7 @@ class ActionsAfterUpdate
     public function __construct()
     {
         $this->module = 'package-products';
-        $this->version = 1;
+        $this->version = 2;
     }
 
     public function handle(Command $command)
@@ -36,6 +37,7 @@ ADD COLUMN `dest_model` VARCHAR(100) NOT NULL AFTER `updated_at`;*/
             'PublishMissingMigrations' => PublishMissingMigrations::class,
             'PublishMissingConfig' => PublishMissingConfig::class,
             'CreateMissingTable' => CreateMissingTable::class,
+            'AlterTables' => AlterTables::class,
         ];
 
         try {
