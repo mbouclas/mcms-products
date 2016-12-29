@@ -4,7 +4,7 @@ namespace Mcms\Products\Installer\AfterUpdate;
 
 use Mcms\Core\Models\UpdatesLog;
 use Illuminate\Console\Command;
-use Products\Core\Installer\AfterUpdate\AlterTables\AddSkuToProducts;
+use Mcms\Products\Installer\AfterUpdate\AlterTables\AddSkuToProducts;
 
 class AlterTables
 {
