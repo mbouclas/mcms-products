@@ -1,6 +1,6 @@
 <?php
 
-namespace Products\Core\Installer\AfterUpdate\AlterTables;
+namespace Mcms\Products\Installer\AfterUpdate\AlterTables;
 
 
 use Carbon\Carbon;
