@@ -24,20 +24,6 @@
 
         </div>
 
-        <div class="alert alert-danger" ng-if="VM.errorsFound">
-            <h5>You have {{ ItemForm.$error.required.length }} errors</h5>
-            <ul>
-                <li ng-repeat="(key, errors) in ItemForm.$error track by $index"
-                > <strong>{{ key }}</strong> errors
-                    <ul>
-                        <li ng-repeat="e in errors">
-                            {{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
-
         <md-button type="submit" class="md-accent md-raised">
             <md-icon class="material-icons">save</md-icon>
             Save
