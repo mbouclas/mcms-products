@@ -123,6 +123,7 @@ class ProductCategory extends Model
                     'id' => $category->id,
                     'title' => $category->title,
                     'slug' => $category->slug,
+                    'url' => $category->getSlug(),
                     'children' => $category->descendants->pluck('id')
                 ];
 
