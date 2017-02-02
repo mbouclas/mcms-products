@@ -54,8 +54,8 @@
                 });
         }
 
-        vm.changeProduct = function (product, limit) {
-            vm.filters.product = product;
+        vm.changePage = function (page, limit) {
+            vm.filters.page = page;
             // console.log(vm.filters);
             filter();
         };

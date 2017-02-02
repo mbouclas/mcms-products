@@ -16,14 +16,15 @@
         <md-divider ng-if="!$last"></md-divider>
     </md-list-item>
 </md-list>
+
 <paginator
-        md-limit="VM.Pagination.per_product"
-        md-product="VM.Pagination.current_product"
+        md-limit="VM.Pagination.per_page"
+        md-page="VM.Pagination.current_page"
         md-total="{{VM.Pagination.total}}"
-        md-product-select="false"
+        md-page-select="false"
         md-boundary-links="true"
         mdOptions="false"
-        md-on-paginate="VM.changeProduct">
+        md-on-paginate="VM.changePage">
 </paginator>
 </md-card>
 

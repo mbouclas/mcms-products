@@ -703,8 +703,8 @@ require('./editProductCategory.component');
                 });
         }
 
-        vm.changeProduct = function (product, limit) {
-            vm.filters.product = product;
+        vm.changePage = function (page, limit) {
+            vm.filters.page = page;
             // console.log(vm.filters);
             filter();
         };
@@ -1388,6 +1388,7 @@ require('./Widgets/latestProducts.widget');
             vm.Pagination = items;
             vm.Items = items.data;
             vm.Categories = categories;
+            console.log(vm.Pagination);
         };
 
         vm.sort = function (sort, direction) {
@@ -1408,10 +1409,8 @@ require('./Widgets/latestProducts.widget');
                 });
         }
 
-
-        vm.changeProduct = function (product, limit) {
-
-            vm.filters.product = product;
+        vm.changePage = function (page, limit) {
+            vm.filters.page = page;
             filter();
         };
 

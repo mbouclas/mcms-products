@@ -81,6 +81,7 @@
             vm.Pagination = items;
             vm.Items = items.data;
             vm.Categories = categories;
+            console.log(vm.Pagination);
         };
 
         vm.sort = function (sort, direction) {
@@ -101,10 +102,8 @@
                 });
         }
 
-
-        vm.changeProduct = function (product, limit) {
-
-            vm.filters.product = product;
+        vm.changePage = function (page, limit) {
+            vm.filters.page = page;
             filter();
         };
 
