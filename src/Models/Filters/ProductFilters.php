@@ -6,11 +6,15 @@ namespace Mcms\Products\Models\Filters;
 use App;
 
 
+use Config;
+use Illuminate\Http\Request;
+use Mcms\Core\Models\Filters\DynamicTableFilters;
 use Mcms\Core\QueryFilters\FilterableDate;
 use Mcms\Core\QueryFilters\FilterableExtraFields;
 use Mcms\Core\QueryFilters\FilterableLimit;
 use Mcms\Core\QueryFilters\FilterableOrderBy;
 use Mcms\Core\QueryFilters\QueryFilters;
+use Mcms\Products\Models\Product;
 
 
 class ProductFilters extends QueryFilters
@@ -34,9 +38,19 @@ class ProductFilters extends QueryFilters
         'minPricce',
         'maxPrice',
         'q',
+        'dt'
     ];
 
-    use FilterableDate, FilterableOrderBy, FilterableLimit, FilterableExtraFields;
+    use FilterableDate, FilterableOrderBy, FilterableLimit, FilterableExtraFields, DynamicTableFilters;
+
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->model = (Config::has('products.product')) ? Config::get('products.product') : Product::class;
+    }
+
+
 
     /**
      * @example ?id=1,0

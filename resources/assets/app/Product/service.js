@@ -6,10 +6,11 @@
 
     Service.$inject = ['ProductDataService', 'LangService', 'lodashFactory', 'mediaFileService',
         '$q', 'ProductCategoryService', 'ItemSelectorService', 'mcms.settingsManagerService',
-        'SeoService', 'TagsService', '$location', 'PRODUCTS_CONFIG', 'core.services', 'ExtraFieldService'];
+        'SeoService', 'TagsService', '$location', 'PRODUCTS_CONFIG', 'core.services', 'ExtraFieldService', '' +
+        'DynamicTableService'];
 
     function Service(DS, Lang, lo, MediaFiles, $q, ProductCategoryService, ItemSelector,
-                     SM, SEO, Tags, $location, Config, Helpers, ExtraFieldService) {
+                     SM, SEO, Tags, $location, Config, Helpers, ExtraFieldService, DynamicTableService) {
         var _this = this,
             Filters = {},
             ExtraFields = [],
@@ -71,6 +72,7 @@
                     SEO.init(response.seoFields);
                     Tags.set(response.tags);
                     ExtraFields = ExtraFieldService.convertFieldsFromMysql(response.extraFields);
+                    DynamicTableService.tables('products', response.dynamicTables);
                     return formatProductAccessor(response.item) || newProduct();
                 });
         }

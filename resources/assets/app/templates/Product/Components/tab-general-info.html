@@ -38,6 +38,11 @@
 
             </md-input-container>
 
+            <dynamic-tables-items-selector
+                    ng-model="VM.Item.dynamic_tables"
+                    tables="VM.DynamicTables"
+                    mode="single"></dynamic-tables-items-selector>
+
             <render-settings items="VM.Settings" ng-model="VM.Item.settings"></render-settings>
             <div ng-show="VM.LayoutsObj[VM.Item.settings.Layout.id] && VM.LayoutsObj[VM.Item.settings.Layout.id].config">
                 <h2>Layout settings</h2>

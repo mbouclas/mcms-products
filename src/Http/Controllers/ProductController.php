@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Config;
 use Mcms\Core\ExtraFields\ExtraFields;
 use Mcms\Core\Models\Filters\ExtraFieldFilters;
+use Mcms\Core\Services\DynamicTables\DynamicTablesService;
 use Mcms\Core\Services\SettingsManager\SettingsManagerService;
 use Mcms\Products\Models\Filters\ProductFilters;
 use Mcms\Products\Models\Product;
@@ -132,15 +133,17 @@ class ProductController extends Controller
             // $query->time
         });
         $filters->request->merge(['model' => str_replace('\\','\\\\',get_class($this->productService->model))]);
+        $dynamicTableService = new DynamicTablesService(new $this->productService->model->dynamicTablesModel);
 
         return [
-            'item' => $this->productService->findOne($id, ['related', 'categories',
+            'item' => $this->productService->findOne($id, ['related', 'categories', 'dynamicTables',
                 'galleries','tagged','files', 'extraFields', 'extraFields.field']),
             'imageCategories' => $imageCategories,
             'extraFields' => $extraFieldService->model->filter($filters)->get(),
             'imageCopies' => Config::get('products.items.images'),
             'config' => array_merge(Config::get('products.items'), Config::get('products.money')),
             'tags' => $this->productService->model->existingTags(),
+            'dynamicTables' => $dynamicTableService->all(),
             'settings' => SettingsManagerService::get('products'),
             'connectors' => ItemConnector::connectors(),
             'seoFields' => Config::get('seo')

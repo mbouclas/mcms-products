@@ -81,7 +81,6 @@
             vm.Pagination = items;
             vm.Items = items.data;
             vm.Categories = categories;
-            console.log(vm.Pagination);
         };
 
         vm.sort = function (sort, direction) {

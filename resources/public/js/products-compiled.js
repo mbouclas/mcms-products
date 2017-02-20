@@ -898,7 +898,7 @@ require('./editProductCategory.component');
         'core.services', 'configuration', 'AuthService', 'LangService',
         'ProductCategoryService',  'PRODUCTS_CONFIG', 'ItemSelectorService', 'lodashFactory',
         'mcms.settingsManagerService', 'SeoService', 'LayoutManagerService', '$timeout', '$rootScope', '$q',
-        'momentFactory', 'ModuleExtender', 'MediaLibraryService', 'ExtraFieldService'];
+        'momentFactory', 'ModuleExtender', 'MediaLibraryService', 'ExtraFieldService', 'DynamicTableService'];
 
     function Directive(Config, hotkeys) {
 
@@ -946,7 +946,7 @@ require('./editProductCategory.component');
 
     function DirectiveController($scope, Product, Helpers, Config, ACL, Lang, ProductCategory, ProductsConfig,
                                  ItemSelector, lo, SM, SEO, LMS, $timeout, $rootScope, $q,
-                                 moment, ModuleExtender, MLS, ExtraFieldService) {
+                                 moment, ModuleExtender, MLS, ExtraFieldService, DynamicTableService) {
         var vm = this,
             autoSaveHooks = [],
             Model = '\\Mcms\\Products\\Models\\Product';
@@ -1161,6 +1161,7 @@ require('./editProductCategory.component');
 
         function init(item) {
             vm.Item = item;
+            vm.DynamicTables = DynamicTableService.tables('products');
 
             if (typeof vm.Item.files == 'undefined'){
                 vm.Item.files = [];
@@ -1388,7 +1389,6 @@ require('./Widgets/latestProducts.widget');
             vm.Pagination = items;
             vm.Items = items.data;
             vm.Categories = categories;
-            console.log(vm.Pagination);
         };
 
         vm.sort = function (sort, direction) {
@@ -1549,10 +1549,11 @@ require('./Widgets/latestProducts.widget');
 
     Service.$inject = ['ProductDataService', 'LangService', 'lodashFactory', 'mediaFileService',
         '$q', 'ProductCategoryService', 'ItemSelectorService', 'mcms.settingsManagerService',
-        'SeoService', 'TagsService', '$location', 'PRODUCTS_CONFIG', 'core.services', 'ExtraFieldService'];
+        'SeoService', 'TagsService', '$location', 'PRODUCTS_CONFIG', 'core.services', 'ExtraFieldService', '' +
+        'DynamicTableService'];
 
     function Service(DS, Lang, lo, MediaFiles, $q, ProductCategoryService, ItemSelector,
-                     SM, SEO, Tags, $location, Config, Helpers, ExtraFieldService) {
+                     SM, SEO, Tags, $location, Config, Helpers, ExtraFieldService, DynamicTableService) {
         var _this = this,
             Filters = {},
             ExtraFields = [],
@@ -1614,6 +1615,7 @@ require('./Widgets/latestProducts.widget');
                     SEO.init(response.seoFields);
                     Tags.set(response.tags);
                     ExtraFields = ExtraFieldService.convertFieldsFromMysql(response.extraFields);
+                    DynamicTableService.tables('products', response.dynamicTables);
                     return formatProductAccessor(response.item) || newProduct();
                 });
         }
@@ -1735,11 +1737,14 @@ require('./Widgets/latestProducts.widget');
     var assetsUrl = '/assets/',
         appUrl = '/app/',
         componentsUrl = appUrl + 'Components/',
-        templatesDir = '/vendor/mcms/products/app/templates/';
+        templatesDir = '/vendor/mcms/products/app/templates/',
+    itemModelName = 'Mcms\\\\Products\\\\Models\\\\Product',
+    categoryModelName = 'Mcms\\\\Products\\\\Models\\\\ProductCategory';
 
     var config = {
-        productModel : 'Mcms\\\\Products\\\\Models\\\\Product',
-        productCategoryModel : 'Mcms\\\\Products\\\\Models\\\\ProductCategory',
+        itemModelName : itemModelName,
+        productModel : itemModelName,
+        productCategoryModel : categoryModelName,
         apiUrl : '/api/',
         prefixUrl : '/admin',
         previewUrl : '/admin/api/product/preview/',
@@ -1788,12 +1793,12 @@ require('./Widgets/latestProducts.widget');
         'mcms.products.extraFields',
         'ngFileUpload'
     ])
-
         .run(run);
 
-    run.$inject = ['mcms.menuService'];
+    run.$inject = ['mcms.menuService', 'PRODUCTS_CONFIG', 'DynamicTableService'];
 
-    function run(Menu) {
+    function run(Menu, Config, DynamicTableService) {
+        DynamicTableService.mapModel('products', Config.itemModelName);
 
         Menu.addMenu(Menu.newItem({
             id: 'products',
@@ -1811,6 +1816,13 @@ require('./Widgets/latestProducts.widget');
 
         productsMenu.addChildren([
             Menu.newItem({
+                id: 'productsCategories-manager',
+                title: 'Categories',
+                permalink: '/products/categories',
+                icon: 'view_list',
+                order : 1
+            }),
+            Menu.newItem({
                 id: 'products-manager',
                 title: 'Catalogue',
                 permalink: '/products/content',
@@ -1823,16 +1835,13 @@ require('./Widgets/latestProducts.widget');
                 permalink: '/products/extraFields',
                 icon: 'note_add',
                 order : 3
-            })
-        ]);
-
-        productsMenu.addChildren([
+            }),
             Menu.newItem({
-                id: 'productsCategories-manager',
-                title: 'Categories',
-                permalink: '/products/categories',
-                icon: 'view_list',
-                order : 1
+                id: 'dynamic-tables',
+                title: 'Dynamic Tables',
+                permalink: '/dynamicTables/products',
+                icon: 'assignment',
+                order : 4
             })
         ]);
     }

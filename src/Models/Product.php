@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Config;
 use Conner\Likeable\LikeableTrait;
 use Conner\Tagging\Taggable;
+use Mcms\Core\Models\DynamicTableItem;
 use Mcms\Core\Traits\ExtraFields;
 use Mcms\Core\Models\FileGallery;
 use Mcms\Core\Models\Image;
@@ -86,6 +87,7 @@ class Product extends Model
      */
     public $imageConfigurator = \Mcms\Products\Services\Product\ImageConfigurator::class;
     public $fileConfigurator = \Mcms\Products\Services\Product\FileConfigurator::class;
+    public $dynamicTablesModel = DynamicTable::class;
 
     protected $slugPattern = 'products.items.slug_pattern';
     protected $featuredModel;
@@ -104,6 +106,7 @@ class Product extends Model
         $this->slugPattern = Config::get($this->slugPattern);
         $this->featuredModel = (Config::has('products.featured')) ? Config::get('products.featured') : Featured::class;
         $this->relatedModel = (Config::has('products.related')) ? Config::get('products.related') : Related::class;
+        $this->dynamicTablesModel = (Config::has('products.dynamicTablesModel')) ? Config::get('products.dynamicTablesModel') : $this->dynamicTablesModel;
         $this->extraFieldModel = ExtraField::class;
         if (Config::has('products.items.images.imageConfigurator')){
             $this->imageConfigurator = Config::get('products.items.images.imageConfigurator');
@@ -209,13 +212,6 @@ class Product extends Model
         return $this->belongsToMany($this->featuredModel, $this->table, 'id', 'id');
     }
 
-    /*    public function related()
-        {
-            return $this->hasManyThrough(Product::class, Related::class ,'source_item_id', 'id', 'item_id')
-                ->where('model', get_class($this))
-                ->orderBy('orderBy','ASC');
-        }*/
-
     /**
      * @return mixed
      */
@@ -230,6 +226,16 @@ class Product extends Model
     {
         return $this->hasMany(ExtraFieldValue::class, 'item_id')
             ->where('model', get_class($this));
+    }
+
+    public function dynamicTables()
+    {
+        return $this->belongsToMany(DynamicTable::class,
+            'dynamic_tables_items',
+            'item_id',
+            'dynamic_table_id')
+            ->where('dynamic_tables_items.model', get_class($this))
+            ->withTimestamps();
     }
 
     public function newCollection(array $models = []){

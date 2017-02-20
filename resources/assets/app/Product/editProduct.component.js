@@ -7,7 +7,7 @@
         'core.services', 'configuration', 'AuthService', 'LangService',
         'ProductCategoryService',  'PRODUCTS_CONFIG', 'ItemSelectorService', 'lodashFactory',
         'mcms.settingsManagerService', 'SeoService', 'LayoutManagerService', '$timeout', '$rootScope', '$q',
-        'momentFactory', 'ModuleExtender', 'MediaLibraryService', 'ExtraFieldService'];
+        'momentFactory', 'ModuleExtender', 'MediaLibraryService', 'ExtraFieldService', 'DynamicTableService'];
 
     function Directive(Config, hotkeys) {
 
@@ -55,7 +55,7 @@
 
     function DirectiveController($scope, Product, Helpers, Config, ACL, Lang, ProductCategory, ProductsConfig,
                                  ItemSelector, lo, SM, SEO, LMS, $timeout, $rootScope, $q,
-                                 moment, ModuleExtender, MLS, ExtraFieldService) {
+                                 moment, ModuleExtender, MLS, ExtraFieldService, DynamicTableService) {
         var vm = this,
             autoSaveHooks = [],
             Model = '\\Mcms\\Products\\Models\\Product';
@@ -270,6 +270,7 @@
 
         function init(item) {
             vm.Item = item;
+            vm.DynamicTables = DynamicTableService.tables('products');
 
             if (typeof vm.Item.files == 'undefined'){
                 vm.Item.files = [];

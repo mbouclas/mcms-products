@@ -11,6 +11,7 @@ use Mcms\Core\Models\Image;
 use Mcms\Core\Models\MenuItem;
 
 use Mcms\Core\QueryFilters\Filterable;
+use Mcms\Core\Services\DynamicTables\DynamicTablesService;
 use Mcms\Core\Services\Image\GroupImagesByType;
 use Mcms\Core\Traits\FixTags;
 use Mcms\FrontEnd\Services\PermalinkArchive;
@@ -95,6 +96,9 @@ class ProductService
         //sanitize the model
         $Product = $this->saveRelated($product, $Product);
 
+        $dynamicTableService = new DynamicTablesService(new $this->model->dynamicTablesModel);
+        $Product->dynamicTables()->sync($dynamicTableService->sync($product['dynamic_tables']));
+
         $Product = $this->fixTags($product, $Product);
         $Product->extraFieldValues()->sync($Product->sortOutExtraFields($product['extra_fields']));
         //emit an event so that some other bit of the app might catch it
@@ -123,6 +127,8 @@ class ProductService
 
         $Product = $this->product->create($product);
         $Product->categories()->attach($this->sortOutCategories($product['categories']));
+        $dynamicTableService = new DynamicTablesService(new $this->model->dynamicTablesModel);
+        $Product->dynamicTables()->attach($dynamicTableService->sync($product['dynamic_tables']));
         $Product = $this->saveRelated($product, $Product);
         $Product = $this->fixTags($product, $Product);
         Event::fire('product.created',$Product);

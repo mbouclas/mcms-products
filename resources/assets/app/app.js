@@ -10,12 +10,12 @@
         'mcms.products.extraFields',
         'ngFileUpload'
     ])
-
         .run(run);
 
-    run.$inject = ['mcms.menuService'];
+    run.$inject = ['mcms.menuService', 'PRODUCTS_CONFIG', 'DynamicTableService'];
 
-    function run(Menu) {
+    function run(Menu, Config, DynamicTableService) {
+        DynamicTableService.mapModel('products', Config.itemModelName);
 
         Menu.addMenu(Menu.newItem({
             id: 'products',
@@ -33,6 +33,13 @@
 
         productsMenu.addChildren([
             Menu.newItem({
+                id: 'productsCategories-manager',
+                title: 'Categories',
+                permalink: '/products/categories',
+                icon: 'view_list',
+                order : 1
+            }),
+            Menu.newItem({
                 id: 'products-manager',
                 title: 'Catalogue',
                 permalink: '/products/content',
@@ -45,16 +52,13 @@
                 permalink: '/products/extraFields',
                 icon: 'note_add',
                 order : 3
-            })
-        ]);
-
-        productsMenu.addChildren([
+            }),
             Menu.newItem({
-                id: 'productsCategories-manager',
-                title: 'Categories',
-                permalink: '/products/categories',
-                icon: 'view_list',
-                order : 1
+                id: 'dynamic-tables',
+                title: 'Dynamic Tables',
+                permalink: '/dynamicTables/products',
+                icon: 'assignment',
+                order : 4
             })
         ]);
     }
