@@ -13,6 +13,7 @@ use Mcms\Core\QueryFilters\FilterableDate;
 use Mcms\Core\QueryFilters\FilterableExtraFields;
 use Mcms\Core\QueryFilters\FilterableLimit;
 use Mcms\Core\QueryFilters\FilterableOrderBy;
+use Mcms\Core\QueryFilters\FilterableTagged;
 use Mcms\Core\QueryFilters\QueryFilters;
 use Mcms\Products\Models\Product;
 
@@ -38,10 +39,11 @@ class ProductFilters extends QueryFilters
         'minPricce',
         'maxPrice',
         'q',
-        'dt'
+        'dt',
+        'tag'
     ];
 
-    use FilterableDate, FilterableOrderBy, FilterableLimit, FilterableExtraFields, DynamicTableFilters;
+    use FilterableDate, FilterableOrderBy, FilterableLimit, FilterableExtraFields, DynamicTableFilters, FilterableTagged;
 
     public function __construct(Request $request)
     {
