@@ -290,7 +290,7 @@
             vm.thumbUploadOptions.params.item_id = item.id;
             vm.thumbUploadOptions.params.model = Model;
             vm.thumbUploadOptions.params.type = 'thumb';
-
+            vm.thumbUploadOptions.params.resize = true;
             vm.imagesUploadOptions.params.item_id = item.id;
             vm.imagesUploadOptions.params.model = Model;
             vm.imagesUploadOptions.params.type = 'images';
