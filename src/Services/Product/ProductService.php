@@ -95,10 +95,10 @@ class ProductService
         $Product->categories()->sync($this->sortOutCategories($product['categories']));
         //sanitize the model
         $Product = $this->saveRelated($product, $Product);
-
-        $dynamicTableService = new DynamicTablesService(new $this->model->dynamicTablesModel);
-        $Product->dynamicTables()->sync($dynamicTableService->sync($product['dynamic_tables']));
-
+        if (isset($product['dynamic_tables'])) {
+            $dynamicTableService = new DynamicTablesService(new $this->model->dynamicTablesModel);
+            $Product->dynamicTables()->sync($dynamicTableService->sync($product['dynamic_tables']));
+        }
         $Product = $this->fixTags($product, $Product);
         $Product->extraFieldValues()->sync($Product->sortOutExtraFields($product['extra_fields']));
         //emit an event so that some other bit of the app might catch it
@@ -127,8 +127,11 @@ class ProductService
 
         $Product = $this->product->create($product);
         $Product->categories()->attach($this->sortOutCategories($product['categories']));
-        $dynamicTableService = new DynamicTablesService(new $this->model->dynamicTablesModel);
-        $Product->dynamicTables()->attach($dynamicTableService->sync($product['dynamic_tables']));
+        if (isset($product['dynamic_tables'])){
+            $dynamicTableService = new DynamicTablesService(new $this->model->dynamicTablesModel);
+            $Product->dynamicTables()->attach($dynamicTableService->sync($product['dynamic_tables']));
+        }
+
         $Product = $this->saveRelated($product, $Product);
         $Product = $this->fixTags($product, $Product);
         Event::fire('product.created',$Product);
