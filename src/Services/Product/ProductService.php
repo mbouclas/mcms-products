@@ -100,7 +100,10 @@ class ProductService
             $Product->dynamicTables()->sync($dynamicTableService->sync($product['dynamic_tables']));
         }
         $Product = $this->fixTags($product, $Product);
-        $Product->extraFieldValues()->sync($Product->sortOutExtraFields($product['extra_fields']));
+        if ($product['extra_fields']) {
+            $Product->extraFieldValues()->sync($Product->sortOutExtraFields($product['extra_fields']));
+        }
+
         //emit an event so that some other bit of the app might catch it
         Event::fire('menu.item.sync',$Product);
         Event::fire('product.updated',$Product);
