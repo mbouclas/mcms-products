@@ -169,7 +169,9 @@ class Product extends Model
      */
     public function thumb()
     {
-        return $this->hasOne(Image::class, 'item_id')->where('type', 'thumb');
+        return $this->hasOne(Image::class, 'item_id')
+            ->where('model', __CLASS__)
+            ->where('type', 'thumb');
     }
 
     /**
@@ -180,6 +182,7 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(Image::class, 'item_id')
+            ->where('model', __CLASS__)
             ->where('type', 'images')
             ->orderBy('orderBy','ASC');
     }
@@ -187,6 +190,7 @@ class Product extends Model
     public function files()
     {
         return $this->hasMany(FileGallery::class, 'item_id')
+            ->where('model', __CLASS__)
             ->orderBy('orderBy','ASC');
     }
 
@@ -204,6 +208,7 @@ class Product extends Model
     public function galleries()
     {
         return $this->hasMany(Image::class, 'item_id')
+            ->where('model', __CLASS__)
             ->where('type', '!=', 'thumb');
     }
 
