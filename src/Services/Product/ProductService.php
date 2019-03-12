@@ -105,8 +105,8 @@ class ProductService
         }
 
         //emit an event so that some other bit of the app might catch it
-        Event::fire('menu.item.sync',$Product);
-        Event::fire('product.updated',$Product);
+        event('menu.item.sync',$Product);
+        event('product.updated',$Product);
 
         return $Product;
     }
@@ -137,7 +137,7 @@ class ProductService
 
         $Product = $this->saveRelated($product, $Product);
         $Product = $this->fixTags($product, $Product);
-        Event::fire('product.created',$Product);
+        event('product.created',$Product);
         return $Product;
     }
 
@@ -159,8 +159,8 @@ class ProductService
         //delete from related
         Related::where('model',get_class($this->model))->where('source_item_id', $id)->orWhere('item_id', $id)->delete();
         //emit an event so that some other bit of the app might catch it
-        Event::fire('menu.item.destroy',$item);
-        Event::fire('product.destroyed',$item);
+        event('menu.item.destroy',$item);
+        event('product.destroyed',$item);
 
         return $item->delete();
     }
