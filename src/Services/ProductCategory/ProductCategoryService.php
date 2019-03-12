@@ -12,6 +12,7 @@ use Mcms\Products\Exceptions\InvalidProductCategoryFormatException;
 use Mcms\Products\Models\ProductCategory;
 use Mcms\Products\Services\Product\ProductCategoryValidator;
 use Illuminate\Support\Collection;
+use Str;
 
 /**
  * Class ProductCategoryService
@@ -115,7 +116,7 @@ class ProductCategoryService
 
     private function setSlug($item){
         if ( ! isset($item['slug']) || ! $item['slug']){
-            return str_slug($item['title'][App::getLocale()]);
+            return Str::slug($item['title'][App::getLocale()]);
         }
 
         return $item['slug'];
