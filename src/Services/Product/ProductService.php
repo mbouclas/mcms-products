@@ -185,12 +185,14 @@ class ProductService
         if ($item){
             $item = $item->relatedItems();
             $item->related = collect($item->related);
+
+            if (in_array('galleries', $with)){
+                $item->images = $this->imageGrouping
+                    ->group($item->galleries, \Config::get('products.items.images.types'));
+            }
         }
 
-        if (in_array('galleries', $with)){
-            $item->images = $this->imageGrouping
-                ->group($item->galleries, \Config::get('products.items.images.types'));
-        }
+
 
         return $item;
     }
