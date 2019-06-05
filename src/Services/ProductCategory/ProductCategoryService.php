@@ -9,6 +9,7 @@ use Event;
 use Mcms\Core\Helpers\Strings;
 use Mcms\FrontEnd\Services\PermalinkArchive;
 use Mcms\Products\Exceptions\InvalidProductCategoryFormatException;
+use Mcms\Products\Models\Product;
 use Mcms\Products\Models\ProductCategory;
 use Mcms\Products\Services\Product\ProductCategoryValidator;
 use Illuminate\Support\Collection;
@@ -59,10 +60,12 @@ class ProductCategoryService
             //write 301
             PermalinkArchive::add($this->model->generateSlug($Category->toArray()), $newLink);
         }
+
         $Category->update($category);
         //sanitize the model
-        $Category = $this->saveFeatured($category, $Category);
-
+//        $Category = $this->saveFeatured($category, $Category);
+        $category['related'] = isset($category['featured']) ? $category['featured'] : []; // patch to accept it cause our front-end is not sending related but featured
+        $Category = $this->saveRelated($category, $Category);
         //emit an event so that some other bit of the app might catch it
         event('menu.item.sync',$Category);
 
@@ -120,6 +123,27 @@ class ProductCategoryService
         }
 
         return $item['slug'];
+    }
+
+    private function saveRelated(array $category, ProductCategory $ProductCategory)
+    {
+        if ( ! isset($category['related']) || ! is_array($category['related'])  ){
+            return $ProductCategory;
+        }
+
+        // lets convert it to related cause this is originally featured
+
+        foreach ($category['related'] as $index => $item) {
+            $category['related'][$index]['source_item_id'] = (!isset( $category['related'][$index]['source_item_id'])) ? $category['id'] :  $category['related'][$index]['source_item_id'];
+            $category['related'][$index]['dest_model'] = ( ! isset($item['dest_model']))
+                ? $category['related'][$index]['dest_model'] = $item['model']
+                : $category['related'][$index]['dest_model'] = $item['dest_model'];
+            $category['related'][$index]['model'] = get_class($ProductCategory);
+        }
+
+        $ProductCategory->related = $ProductCategory->saveRelated($category['related']);
+
+        return $ProductCategory;
     }
 
     /**

@@ -8,6 +8,7 @@ use DB;
 use Mcms\Core\Models\Image;
 use Mcms\Core\Traits\Featurable;
 use Mcms\Core\Traits\Presentable;
+use Mcms\Core\Traits\Relateable;
 use Mcms\Core\Traits\Userable;
 use Mcms\Products\Models\Collections\ProductCategoriesCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ use Mcms\FrontEnd\Helpers\Sluggable;
 
 class ProductCategory extends Model
 {
-    use Translatable, NodeTrait, Presentable, Featurable, Sluggable, Userable;
+    use Translatable, NodeTrait, Presentable, Featurable, Sluggable, Userable, Relateable;
 
     protected $table = 'products_categories';
     public $translatable = ['title', 'description'];
@@ -62,6 +63,7 @@ class ProductCategory extends Model
 
     protected $slugPattern = 'products.categories.slug_pattern';
     protected $featuredModel;
+    protected $relatedModel = CategoryRelated::class;
     protected $productsModel;
     protected $defaultRoute = 'products';
     public $config;
@@ -96,6 +98,13 @@ class ProductCategory extends Model
     public function featured()
     {
         return $this->hasMany($this->featuredModel, 'category_id')
+            ->where('model', get_class($this))
+            ->orderBy('orderBy','ASC');
+    }
+
+    public function related()
+    {
+        return $this->hasMany($this->relatedModel, 'source_item_id')
             ->where('model', get_class($this))
             ->orderBy('orderBy','ASC');
     }
