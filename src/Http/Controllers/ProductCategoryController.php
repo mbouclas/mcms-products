@@ -60,12 +60,18 @@ class ProductCategoryController extends Controller
     public function show($id)
     {
         $category = $this->category->model->with(['image', 'related'])->find($id);
-        $category = $category->relatedItems();
-        $featured = [];
-        foreach ($category->related as $item) {
-            $featured[] = $item;
+        if ($category) {
+            $category = $category->relatedItems();
+
+            foreach ($category->related as $item) {
+                $featured[] = $item;
+            }
+
+            $featured = [];
+
+            $category->featured = $featured;
         }
-        $category->featured = $featured;
+
 
         return [
             'item' => $category,
