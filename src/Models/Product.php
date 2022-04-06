@@ -3,7 +3,7 @@
 namespace Mcms\Products\Models;
 use Carbon\Carbon;
 use Config;
-use Conner\Likeable\LikeableTrait;
+use Conner\Likeable\Likeable;
 use Conner\Tagging\Taggable;
 use Mcms\Core\Models\DynamicTableItem;
 use Mcms\Core\Traits\ExtraFields;
@@ -26,7 +26,7 @@ use Themsaid\Multilingual\Translatable;
 class Product extends Model
 {
     use Translatable, Filterable, Presentable, Taggable,
-        Relateable, Sluggable, CustomImageSize, Userable, ExtraFields, LikeableTrait;
+        Relateable, Sluggable, CustomImageSize, Userable, ExtraFields, Likeable;
 
     /**
      * @var string
